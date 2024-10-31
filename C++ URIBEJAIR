@@ -1,0 +1,102 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+void menu_uribe();
+void ingresoDeDatos_uribe();
+void lecturaDeDatos_uribe();
+
+int main() {
+    menu_uribe();
+    return 0;
+}
+
+void menu_uribe() {
+    int opcion_uribe;
+        cout << " MENU PRINCIPAL " << endl;
+        cout << "1. Ingreso de datos" << endl;
+        cout << "2. Lectura de datos guardados" << endl;
+        cout << "3. Salir" << endl;
+        cout << " Escoja una opcion : " << endl;
+        cin >> opcion_uribe;
+        switch (opcion_uribe) {
+            case 1:
+                ingresoDeDatos_uribe();
+                menu_uribe();
+                break;
+            case 2:
+                lecturaDeDatos_uribe();
+                menu_uribe();
+                break;
+            case 3:
+                cout << "Gracias por usar el programa." << endl;
+                break;
+                return ;
+            default:
+                cout << " Opcion no valida, intenta de nuevo." << endl;
+                break;
+        }
+}
+
+void ingresoDeDatos_uribe() {
+    ofstream archivo_uribe("ARCHIVO.txt", ios::app);
+    cout << " Estudiante " << endl;
+    float tarea1_uribe, tarea2_uribe, tarea3_uribe;
+
+    do {
+        cout << "Ingresa la nota de la tarea 1 (0 - 20): ";
+        cin >> tarea1_uribe;
+    } while (tarea1_uribe < 0 || tarea1_uribe > 20);
+
+    do {
+        cout << "Ingresa la nota de tarea 2 (0 - 20): ";
+        cin >> tarea2_uribe;
+    } while (tarea2_uribe < 0 || tarea2_uribe > 20);
+
+    do {
+        cout << "Ingresa la nota de tarea 3 (0 - 20): ";
+        cin >> tarea3_uribe;
+    } while (tarea3_uribe < 0 || tarea3_uribe > 20);
+
+    float promedio = (tarea1_uribe + tarea2_uribe + tarea3_uribe) / 3;
+    string estado;
+
+    if (promedio >= 14) {
+        estado = "aprobado";
+    } else {
+        estado = "reprobado";
+    }
+    cout << "Estado del estudiante: " << estado << endl;
+    archivo_uribe << "Estudiante - Notas: " << endl;
+    archivo_uribe << " Nota 1: " << tarea1_uribe << endl;
+    archivo_uribe << " Nota 2: " << tarea2_uribe << endl;
+    archivo_uribe << " Nota 3: " << tarea3_uribe << endl;
+    archivo_uribe << " Estado del estudiante: " << estado << endl;
+    archivo_uribe << "------------------------" << endl;
+    archivo_uribe.close();
+    cout << "Datos guardados exitosamente." << endl;
+    cout << " --------------------------------------------------------------------- "<< endl;
+    string estado2;
+    cout << " Desea registrar notas nuevamente (S-N-s-n)? " << endl;
+    cin >> estado2;
+    while (estado2 != "S" && estado2 != "s" && estado2 != "N" && estado2 != "n") {
+        cout << " Ingrese un valor correcto (S-N-s-n): " << endl;
+        cin >> estado2;
+    }
+    if (estado2 == "S" || estado2 == "s") {
+        ingresoDeDatos_uribe();
+    }
+}
+
+
+
+void lecturaDeDatos_uribe() {
+    ifstream archivo_uribe("ARCHIVO.txt");
+    string linea_uribe;
+    cout << " --- Datos Registrados --- " << endl;
+    while (getline(archivo_uribe, linea_uribe)) {
+        cout << linea_uribe << endl;
+    }
+    archivo_uribe.close();
+}
