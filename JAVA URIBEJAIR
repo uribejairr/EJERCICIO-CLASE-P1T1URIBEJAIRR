@@ -1,0 +1,117 @@
+import org.json.simple.JSONArray; // Importación para manejar listas JSON
+import org.json.simple.JSONObject; // Importación para manejar objetos JSON
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class P1URIBEJAIRR {
+
+    public static void main(String[] args) {
+        menu_uribe();
+    }
+
+    public static void menu_uribe() {
+        Scanner scanner_uribe = new Scanner(System.in);
+        int opcion_uribe;
+        
+        System.out.println(" MENU PRINCIPAL ");
+        System.out.println("1. Ingreso de datos");
+        System.out.println("2. Lectura de datos guardados");
+        System.out.println("3. Salir");
+        System.out.print(" Escoja una opcion: ");
+        opcion_uribe = scanner_uribe.nextInt();
+
+        switch (opcion_uribe) {
+            case 1:
+                ingresoDeDatos_uribe();
+                menu_uribe(); // Llamada recursiva para volver al menú
+                break;
+            case 2:
+                lecturaDeDatos_uribe();
+                menu_uribe();
+                break;
+            case 3:
+                System.out.println("Gracias por usar el programa.");
+                break;
+            default:
+                System.out.println(" Opción no válida, intenta de nuevo.");
+                menu_uribe();
+                break;
+        }
+    }
+
+    public static void ingresoDeDatos_uribe() {
+        Scanner scanner_uribe = new Scanner(System.in);
+        JSONArray estudiantes_uribe = new JSONArray();
+
+        System.out.println(" Estudiante ");
+        float tarea1_uribe, tarea2_uribe, tarea3_uribe;
+
+        // Validación de la nota 1
+        do {
+            System.out.print("Ingresa la nota de la tarea 1 (0 - 20): ");
+            tarea1_uribe = scanner_uribe.nextFloat();
+        } while (tarea1_uribe < 0 || tarea1_uribe > 20);
+
+        // Validación de la nota 2
+        do {
+            System.out.print("Ingresa la nota de la tarea 2 (0 - 20): ");
+            tarea2_uribe = scanner_uribe.nextFloat();
+        } while (tarea2_uribe < 0 || tarea2_uribe > 20);
+
+        // Validación de la nota 3
+        do {
+            System.out.print("Ingresa la nota de la tarea 3 (0 - 20): ");
+            tarea3_uribe = scanner_uribe.nextFloat();
+        } while (tarea3_uribe < 0 || tarea3_uribe > 20);
+
+        // Cálculo del promedio
+        float promedio_uribe = (tarea1_uribe + tarea2_uribe + tarea3_uribe) / 3;
+        String estado_uribe = (promedio_uribe >= 14) ? "aprobado" : "reprobado";
+
+        System.out.println("Estado del estudiante: " + estado_uribe);
+
+        // Creación del objeto JSON para almacenar los datos
+        JSONObject estudiante_uribe = new JSONObject();
+        estudiante_uribe.put("Nota 1", tarea1_uribe);
+        estudiante_uribe.put("Nota 2", tarea2_uribe);
+        estudiante_uribe.put("Nota 3", tarea3_uribe);
+        estudiante_uribe.put("Promedio", promedio_uribe);
+        estudiante_uribe.put("Estado del estudiante", estado_uribe);
+
+        // Agregamos el objeto estudiante al arreglo JSON
+        estudiantes_uribe.add(estudiante_uribe);
+
+        // Escritura de datos en el archivo JSON
+        try (FileWriter file_uribe = new FileWriter("ARCHIVO.json", true)) {
+            file_uribe.write(estudiantes_uribe.toJSONString() + System.lineSeparator());
+            file_uribe.flush();
+            System.out.println("Datos guardados exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar los datos: " + e.getMessage());
+        }
+
+        System.out.println(" --------------------------------------------------------------------- ");
+
+        // Pregunta si desea registrar más notas
+        System.out.print(" ¿Desea registrar notas nuevamente (S-N)? ");
+        String estado2_uribe = scanner_uribe.next();
+        if (estado2_uribe.equalsIgnoreCase("S")) {
+            ingresoDeDatos_uribe();
+        }
+    }
+
+    public static void lecturaDeDatos_uribe() {
+        System.out.println(" --- Datos Registrados --- ");
+        try (BufferedReader reader_uribe = new BufferedReader(new FileReader("ARCHIVO.json"))) {
+            String linea_uribe;
+            while ((linea_uribe = reader_uribe.readLine()) != null) {
+                System.out.println(linea_uribe);
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer los datos: " + e.getMessage());
+        }
+    }
+}
